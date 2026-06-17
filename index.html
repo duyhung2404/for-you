@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Tam html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birdthday</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { 
+            width: 100%; height: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; background-color: #050510; color: #fff;
+        }
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; transition: all 0.5s ease; opacity: 0; pointer-events: none;
+            z-index: 10;
+        }
+        .active { opacity: 1; pointer-events: auto; }
+        #lobby-screen { background: radial-gradient(circle, #1a0b2e 0%, #050510 100%); }
+        .btn-glow {
+            padding: 15px 35px; font-size: 1.2rem; font-weight: bold;
+            color: #fff; background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 65, 108, 0.6);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 65, 108, 0.9); }
+        #password-screen { background: #0a0a1a; }
+        .pass-box {
+            background: rgba(255, 255, 255, 0.05); padding: 30px;
+            border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 90%; width: 400px;
+        }
+        .pass-box h3 { margin-bottom: 15px; color: #ff758c; font-size: 1.1rem; line-height: 1.5; }
+        .pass-box input {
+            width: 100%; padding: 12px 20px; margin-bottom: 20px;
+            border: none; border-radius: 25px; background: rgba(255,255,255,0.1);
+            color: #fff; font-size: 1rem; text-align: center; outline: none;
+            border: 1px solid transparent; transition: 0.3s;
+        }
+        .pass-box input:focus { border-color: #ff416c; }
+        .btn-submit { padding: 10px 25px; background: #ff416c; border: none; border-radius: 20px; color: white; cursor: pointer; font-weight: bold; }
+        .error-msg { color: #ff4b2b; font-size: 0.9rem; margin-top: 10px; display: none; }
+        #main-screen { background: black; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .letter-container {
+            position: relative; z-index: 2; max-width: 85%; width: 500px;
+            background: rgba(15, 10, 25, 0.75); padding: 35px;
+            border-radius: 20px; border: 1px solid rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(8px); text-align: center;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.2);
+        }
+        .letter-container h1 { font-family: 'Georgia', serif; color: #ff69b4; margin-bottom: 20px; font-size: 1.8rem; }
+        .letter-content { font-size: 1.05rem; line-height: 1.8; color: #ffe4e1; text-align: justify; white-space: pre-line; }
+        .heart-icon { color: #ff416c; font-size: 1.5rem; margin-top: 15px; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+<!-- Nhạc nền ẩn chạy tự động sau khi tương tác -->
+    <audio id="bg-music" loop>
+        <source src="Bâng Khuâng.mp3" type="audio/mpeg">
+    </audio>
+    <!-- MÀN HÌNH 1: SẢNH CHỜ -->
+    <div id="lobby-screen" class="screen active">
+        <button class="btn-glow" onclick="goToPassword()">Bấm vào đây nè</button>
+    </div>
+
+    <!-- MÀN HÌNH 2: NHẬP MẬT KHẨU -->
+    <div id="password-screen" class="screen">
+        <div class="pass-box">
+            <h3>Gợi ý mật khẩu:<br>Sinh nhật của em</h3>
+            <input type="text" id="password-input" placeholder="Nhập mật khẩu vào đây..." onkeypress="checkEnter(event)">
+            <button class="btn-submit" onclick="verifyPassword()">Xác nhận</button>
+            <p id="error-message" class="error-msg">Sai rồi công chúa ơi, nhập lại thử xem! ❤️</p>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 3: TRANG CHÍNH -->
+    <div id="main-screen" class="screen">
+        <canvas id="heartCanvas"></canvas>
+        <div class="letter-container">
+            <h1>Dear Ha Phuong</h1>
+<div class="letter-content" style="max-height: 55vh; overflow-y: auto; padding-right: 5px;">
+            Chúc mừng sinh nhật em,tuổi 20 thật tròn đầy trọn vẹn nhé. 
+                Chúc em đón một tuổi mới thêm rực rỡ đón thêm nhiều điều mới mẻ và đặc biệt là hãy luôn vui vẻ và yêu đời,hạnh phúc
+               Dẫu trên đường em đi có nhiều khó khăn gian khổ mong em luôn kiên cường chân cứng đá mềm thành công trên con đường mang con chữ,kiến thức với các mầm non tương lai
+               Khong chỉ riêng anh,anh biết mọi người cũng đều kì vọng vào em rất nhiều có thể vô tình tạo cho em những áp lực vô hình không ai biết
+               Nhưng không sao nếu mệt qua cứ dừng lại 1 chút nghỉ ngơi rồi mạnh mẽ bước tiếp nhé
+                Tuy không còn đồng hành cùng nhau nữa nhưng anh và mọi người luôn dõi theo và ủng hộ những việc làm cũng như nỗ lực của em
+               Và cuối cũng vẫn là chúc mừng ngày đặc biệt của một bạn nhỏ vừa bước vào tuổi người lớn
+                Happy Birthday! ❤️
+            </div>
+
+            
+            <div class="heart-icon">❤</div>
+
+            
+        </div>
+    </div>
+
+    <script>
+        // CẤU HÌNH MẬT KHẨU (Bạn đổi chữ "ngay dau tien" thành mật khẩu bạn muốn nhé)
+        const CORRECT_PASSWORD = "2006"; 
+
+       function goToPassword() {
+            // Kích hoạt phát nhạc nền ẩn
+            const music = document.getElementById('bg-music');
+            if (music) {
+                music.play().catch(error => console.log("Trình duyệt chặn autoplay, cần tương tác thêm:", error));
+            }
+            
+            document.getElementById('lobby-screen').classList.remove('active');
+            document.getElementById('password-screen').classList.add('active');
+        }
+
+        function checkEnter(e) {
+            if(e.key === 'Enter') { verifyPassword(); }
+        }
+
+        function verifyPassword() {
+            const input = document.getElementById('password-input').value.trim().toLowerCase();
+            const cleanInput = input.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+            const cleanTarget = CORRECT_PASSWORD.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+
+            if(cleanInput === cleanTarget) {
+                document.getElementById('password-screen').classList.remove('active');
+                document.getElementById('main-screen').classList.add('active');
+                initEffects();
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        function initEffects() {
+            const canvas = document.getElementById('heartCanvas');
+            const ctx = canvas.getContext('2d');
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
+
+            const hearts = []; const stars = [];
+            for(let i = 0; i < 100; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5 + 0.5, alpha: Math.random(), speed: Math.random() * 0.02 + 0.01 });
+            }
+            function createHeart() {
+                return { x: Math.random() * canvas.width, y: canvas.height + Math.random() * 100, size: Math.random() * 8 + 5, speedY: Math.random() * 1.5 + 0.8, speedX: Math.sin(Math.random() * Math.PI) * 0.5, alpha: Math.random() * 0.5 + 0.5, hue: Math.random() * 30 + 340 };
+            }
+            for(let i = 0; i < 80; i++) { let h = createHeart(); h.y = Math.random() * canvas.height; hearts.push(h); }
+            function drawHeart(x, y, size, color) {
+                ctx.save(); ctx.beginPath(); ctx.translate(x, y); ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-size / 2, -size / 2, -size, size / 3, 0, size);
+                ctx.bezierCurveTo(size, size / 3, size / 2, -size / 2, 0, 0);
+                ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.restore();
+            }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => { s.alpha += s.speed; if(s.alpha > 1 || s.alpha < 0) s.speed = -s.speed; ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(s.alpha)})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
+                if (hearts.length < 200) { hearts.push(createHeart()); }
+                for(let i = hearts.length - 1; i >= 0; i--) {
+                    let h = hearts[i]; h.y -= h.speedY; h.x += h.speedX;
+                    drawHeart(h.x, h.y, h.size, `hsla(${h.hue}, 100%, 65%, ${h.alpha})`);
+                    if(h.y < -20) { hearts[i] = createHeart(); }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
